@@ -2,6 +2,8 @@
 
 #include "ViewportBlastMeshComponent.h"
 
+#include <NvBlastTypes.h>
+
 #include "Math/UnrealMathUtility.h"
 #include "PhysicsEngine/PhysicsAsset.h"
 #include "PhysicsEngine/SkeletalBodySetup.h"

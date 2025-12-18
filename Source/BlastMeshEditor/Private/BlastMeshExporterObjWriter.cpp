@@ -35,6 +35,8 @@
 
 #include <algorithm>
 #include <sstream>
+#include <vector>
+
 #include "Containers/StringConv.h"
 
 

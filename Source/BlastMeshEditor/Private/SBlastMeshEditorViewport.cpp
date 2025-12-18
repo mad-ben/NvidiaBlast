@@ -43,8 +43,9 @@ public:
 	virtual void Draw(const FSceneView* View, FPrimitiveDrawInterface* PDI) override;
 	FLinearColor GetBackgroundColor() const override { return FLinearColor::Black; }
 	virtual bool InputKey(const FInputKeyEventArgs& EventArgs) override;
-	virtual bool InputAxis(FViewport* Viewport, FInputDeviceId DeviceID, FKey Key, float Delta, float DeltaTime,
-	                       int32 NumSamples = 1, bool bGamepad = false) override;
+	//virtual bool InputAxis(FViewport* Viewport, FInputDeviceId DeviceID, FKey Key, float Delta, float DeltaTime,
+	                       //int32 NumSamples = 1, bool bGamepad = false) override;
+	virtual bool InputAxis(const FInputKeyEventArgs& Args) override;
 	virtual void ProcessClick(class FSceneView& View, class HHitProxy* HitProxy, FKey Key, EInputEvent Event,
 	                          uint32 HitX, uint32 HitY) override;
 	virtual void MouseMove(FViewport* Viewport, int32 x, int32 y) override;
@@ -595,9 +596,9 @@ bool FBlastMeshEditorViewportClient::InputKey(const FInputKeyEventArgs& EventArg
 }
 
 
-bool FBlastMeshEditorViewportClient::InputAxis(FViewport* InViewport, FInputDeviceId DeviceID, FKey Key, float Delta,
-                                               float DeltaTime, int32 NumSamples /*= 1*/, bool bGamepad /*= false*/)
-{
+//bool FBlastMeshEditorViewportClient::InputAxis(FViewport* InViewport, FInputDeviceId DeviceID, FKey Key, float Delta,
+                                              // float DeltaTime, int32 NumSamples /*= 1*/, bool bGamepad /*= false*/)
+/*{
 	bool bHandled = FEditorViewportClient::InputAxis(InViewport, DeviceID, Key, Delta, DeltaTime, NumSamples, bGamepad);
 
 	if (!bHandled)
@@ -606,6 +607,36 @@ bool FBlastMeshEditorViewportClient::InputAxis(FViewport* InViewport, FInputDevi
 			InViewport, DeviceID, Key, Delta, DeltaTime, NumSamples, bGamepad);
 		if (bHandled)
 			Invalidate();
+	}
+
+	return bHandled;
+}*/
+
+bool FBlastMeshEditorViewportClient::InputAxis(const FInputKeyEventArgs& Args)
+{
+	// Pass the arguments struct to the parent class
+	bool bHandled = FEditorViewportClient::InputAxis(Args);
+
+	if (!bHandled)
+	{
+		// Pass the arguments struct to the preview scene
+		// Note: This assumes FAdvancedPreviewScene has also been updated in your engine version.
+		// If HandleViewportInput expects the old arguments, see the fallback below.
+		bHandled |= static_cast<FAdvancedPreviewScene*>(PreviewScene)->HandleViewportInput(
+			Args.Viewport,            // Viewport
+			Args.InputDevice,         // InputDevice
+			Args.Key,                 // Key
+			Args.AmountDepressed,     // Delta
+			FApp::GetDeltaTime(),     // DeltaTime (must be retrieved from App)
+			1,                        // NumSamples (default)
+			Args.Key.IsGamepadKey()   // bGamepad
+		);
+
+
+		if (bHandled)
+		{
+			Invalidate();
+		}
 	}
 
 	return bHandled;
