@@ -20,7 +20,10 @@ namespace UnrealBuildTool.Rules
 
             PublicDependencyModuleNames.AddRange(
                 new string[] {
-                "Engine"
+                "Engine",
+                "Chaos",      //AK CHANGE
+                "ChaosCore",  //AK CHANGE
+                "PhysicsCore" //AK CHANGE
                 }
             );
 

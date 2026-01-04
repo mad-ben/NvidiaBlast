@@ -1104,7 +1104,8 @@ TSharedRef<FEditorViewportClient> SBlastMeshEditorViewport::MakeEditorViewportCl
 	return EditorViewportClient.ToSharedRef();
 }
 
-TSharedPtr<SWidget> SBlastMeshEditorViewport::MakeViewportToolbar()
+//TSharedPtr<SWidget> SBlastMeshEditorViewport::MakeViewportToolbar()
+TSharedPtr<SWidget> SBlastMeshEditorViewport::BuildViewportToolbar() //AK CHANGE
 {
 	return SNew(SBlastMeshEditorViewportToolbar, SharedThis(this));
 }
